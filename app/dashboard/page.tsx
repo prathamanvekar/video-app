@@ -287,8 +287,15 @@ export default function Dashboard() {
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between text-sm font-mono text-gray-500">
             <span>
-              Built with Next.js, NextAuth & ImageKit // No bugs were harmed in
-              the making
+              built by{" "}
+              <a
+                href="https://portfolio-prathamanvekar.vercel.app/"
+                className="text-green-400 hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                prathamesh anvekar
+              </a>{" "} 💙
             </span>
             <span>Keyboard shortcuts enabled // Alt + [U,V] </span>
           </div>
