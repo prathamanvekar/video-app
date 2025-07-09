@@ -1,11 +1,12 @@
-"use client"
-import { useRouter } from "next/navigation"
-import { useState, useEffect } from "react"
+"use client";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 
 export default function Home() {
-  const router = useRouter()
-  const [currentJoke, setCurrentJoke] = useState(0)
-  const [glitchActive, setGlitchActive] = useState(false)
+  const router = useRouter();
+  const [currentJoke, setCurrentJoke] = useState(0);
+  const [glitchActive, setGlitchActive] = useState(false);
 
   const jokes = [
     "// TODO: Fix this later (narrator: they never did)",
@@ -14,22 +15,22 @@ export default function Home() {
     "404: Excuses not found",
     "Git commit -m 'fixed everything (probably)'",
     "Stack Overflow for your video storage needs",
-  ]
+  ];
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentJoke((prev) => (prev + 1) % jokes.length)
-    }, 3500)
-    return () => clearInterval(interval)
-  }, [])
+      setCurrentJoke((prev) => (prev + 1) % jokes.length);
+    }, 3500);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const glitchInterval = setInterval(() => {
-      setGlitchActive(true)
-      setTimeout(() => setGlitchActive(false), 200)
-    }, 8000)
-    return () => clearInterval(glitchInterval)
-  }, [])
+      setGlitchActive(true);
+      setTimeout(() => setGlitchActive(false), 200);
+    }, 8000);
+    return () => clearInterval(glitchInterval);
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-950 text-white relative overflow-hidden">
@@ -81,7 +82,9 @@ export default function Home() {
               </div>
               <div className="text-green-400 text-sm">
                 <span className="text-gray-500">$</span> ./video-app --start
-                <div className="text-gray-400 mt-1">Initializing awesome...</div>
+                <div className="text-gray-400 mt-1">
+                  Initializing awesome...
+                </div>
               </div>
             </div>
           </div>
@@ -92,8 +95,11 @@ export default function Home() {
               glitchActive ? "animate-pulse text-red-400" : "text-white"
             }`}
             style={{
-              fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
-              textShadow: glitchActive ? "2px 0 #ff0000, -2px 0 #00ff00" : "none",
+              fontFamily:
+                'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
+              textShadow: glitchActive
+                ? "2px 0 #ff0000, -2px 0 #00ff00"
+                : "none",
             }}
           >
             Video<span className="text-green-400">{"<Hub/>"}</span>
@@ -108,28 +114,15 @@ export default function Home() {
                   style={{ transform: `translateY(-${currentJoke * 24}px)` }}
                 >
                   {jokes.map((joke, index) => (
-                    <div key={index} className="h-6 leading-6 text-sm md:text-base">
+                    <div
+                      key={index}
+                      className="h-6 leading-6 text-sm md:text-base"
+                    >
                       {joke}
                     </div>
                   ))}
                 </div>
               </div>
-            </div>
-          </div>
-
-          {/* Status indicators */}
-          <div className="flex justify-center gap-8 mb-8 text-sm font-mono">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-              <span className="text-gray-400">Server: Online</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" style={{ animationDelay: "0.5s" }}></div>
-              <span className="text-gray-400">Bugs: Minimal</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse" style={{ animationDelay: "1s" }}></div>
-              <span className="text-gray-400">Coffee: Required</span>
             </div>
           </div>
 
@@ -154,8 +147,23 @@ export default function Home() {
 
           {/* Footer */}
           <div className="mt-12 text-gray-500 font-mono text-sm">
-            <p>// Warning: May cause addiction to organized file storage</p>
-            <p className="mt-2 text-xs">Built with ❤️ and excessive amounts of caffeine</p>
+            <p>
+              <span className="text-green-400">whats different</span> - on file
+              select upload, so till u click submit its already uploaded to
+              imagekit
+            </p>
+            <p className="mt-2 text-xs">
+              built by{" "}
+              <a
+                href="https://portfolio-prathamanvekar.vercel.app/"
+                className="text-green-400 hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                prathamesh anvekar
+              </a>{" "}
+              💙
+            </p>
           </div>
         </div>
       </div>
@@ -165,5 +173,5 @@ export default function Home() {
         <div className="h-full bg-gradient-to-r from-green-400 to-green-600 animate-pulse"></div>
       </div>
     </div>
-  )
+  );
 }

@@ -1,17 +1,15 @@
-"use client"
-import { signOut, useSession } from "next-auth/react"
-import { useRouter } from "next/navigation"
-import { useState, useEffect } from "react"
+"use client";
+import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 
 export default function Dashboard() {
-  const router = useRouter()
-  const { data: session } = useSession()
-  const [currentTime, setCurrentTime] = useState(new Date())
-  const [currentTip, setCurrentTip] = useState(0)
-  const [isOnline, setIsOnline] = useState(true)
-  const [panchiScore, setPanchiScore] = useState(0)
-  const [popuMood, setPopuMood] = useState(0)
-  const [konami, setKonami] = useState("")
+  const router = useRouter();
+  const { data: session } = useSession();
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const [currentTip, setCurrentTip] = useState(0);
+  const [isOnline, setIsOnline] = useState(true);
+  const [konami, setKonami] = useState("");
 
   const tips = [
     "Pro tip: Name your files properly. 'video_final_FINAL_v2.mp4' isn't helping anyone.",
@@ -19,7 +17,7 @@ export default function Dashboard() {
     "Fun fact: 90% of storage issues can be solved by deleting old memes.",
     "Debugging tip: If it works on your machine, it's probably the server's fault.",
     "Life hack: Ctrl+Z works in real life too. Just kidding, it doesn't.",
-  ]
+  ];
 
   const popuMoods = [
     { emoji: "🎬", text: "Ready to create magic" },
@@ -28,7 +26,7 @@ export default function Dashboard() {
     { emoji: "🎯", text: "Locked and loaded" },
     { emoji: "🔥", text: "On fire today" },
     { emoji: "✨", text: "Sparkling with ideas" },
-  ]
+  ];
 
   const quickActions = [
     {
@@ -45,85 +43,74 @@ export default function Dashboard() {
       shortcut: "V",
       description: "Your digital film festival awaits",
     },
-  ]
+  ];
 
   useEffect(() => {
-    const timer = setInterval(() => setCurrentTime(new Date()), 1000)
-    return () => clearInterval(timer)
-  }, [])
+    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     const tipInterval = setInterval(() => {
-      setCurrentTip((prev) => (prev + 1) % tips.length)
-    }, 5000)
-    return () => clearInterval(tipInterval)
-  }, [])
+      setCurrentTip((prev) => (prev + 1) % tips.length);
+    }, 5000);
+    return () => clearInterval(tipInterval);
+  }, []);
 
   useEffect(() => {
-    const moodInterval = setInterval(() => {
-      setPopuMood((prev) => (prev + 1) % popuMoods.length)
-    }, 8000)
-    return () => clearInterval(moodInterval)
-  }, [])
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
 
-  useEffect(() => {
-    const handleOnline = () => setIsOnline(true)
-    const handleOffline = () => setIsOnline(false)
-
-    window.addEventListener("online", handleOnline)
-    window.addEventListener("offline", handleOffline)
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
 
     return () => {
-      window.removeEventListener("online", handleOnline)
-      window.removeEventListener("offline", handleOffline)
-    }
-  }, [])
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, []);
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
       if (e.altKey) {
-        const action = quickActions.find((a) => a.shortcut.toLowerCase() === e.key.toLowerCase())
+        const action = quickActions.find(
+          (a) => a.shortcut.toLowerCase() === e.key.toLowerCase()
+        );
         if (action) {
-          e.preventDefault()
-          action.action()
+          e.preventDefault();
+          action.action();
         }
       }
 
       // Konami code easter egg
-      const key = e.key.toLowerCase()
-      const sequence = "arrowuparrowuparrowdownarrowdownarrowleftarrowrightarrowleftarrowrightba"
-      const newKonami = konami + key
+      const key = e.key.toLowerCase();
+      const sequence =
+        "arrowuparrowuparrowdownarrowdownarrowleftarrowrightarrowleftarrowrightba";
+      const newKonami = konami + key;
 
       if (sequence.startsWith(newKonami)) {
-        setKonami(newKonami)
+        setKonami(newKonami);
         if (newKonami === sequence) {
-          alert("🎉 Konami Code activated! Panchi and Popu approve! 🥷")
-          setKonami("")
+          alert("🎉 Konami Code activated! Panchi and Popu approve! 🥷");
+          setKonami("");
         }
       } else {
-        setKonami("")
+        setKonami("");
       }
-    }
+    };
 
-    window.addEventListener("keydown", handleKeyPress)
-    return () => window.removeEventListener("keydown", handleKeyPress)
-  }, [konami])
+    window.addEventListener("keydown", handleKeyPress);
+    return () => window.removeEventListener("keydown", handleKeyPress);
+  }, [konami]);
 
   const getGreeting = () => {
-    const hour = currentTime.getHours()
-    if (hour < 6) return "Still awake? Impressive dedication."
-    if (hour < 12) return "Good morning, code warrior."
-    if (hour < 17) return "Afternoon productivity session?"
-    if (hour < 22) return "Evening upload marathon?"
-    return "Late night coding session detected."
-  }
-
-  const handlePanchiClick = () => {
-    setPanchiScore((prev) => prev + 1)
-    if (panchiScore === 9) {
-      alert("🎯 Panchi power level: Maximum! You're unstoppable now! 🚀")
-    }
-  }
+    const hour = currentTime.getHours();
+    if (hour < 6) return "Still awake? Impressive dedication.";
+    if (hour < 12) return "Good morning, code warrior.";
+    if (hour < 17) return "Afternoon productivity session?";
+    if (hour < 22) return "Evening upload marathon?";
+    return "Late night coding session detected.";
+  };
 
   return (
     <div className="min-h-screen bg-gray-950 text-white relative overflow-hidden">
@@ -148,8 +135,12 @@ export default function Dashboard() {
                 <span className="text-gray-900 font-bold font-mono">VH</span>
               </div>
               <div>
-                <h1 className="text-xl font-mono text-green-400">VideoHub.dashboard()</h1>
-                <p className="text-sm text-gray-400 font-mono">{getGreeting()}</p>
+                <h1 className="text-xl font-mono text-green-400">
+                  VideoHub.dashboard()
+                </h1>
+                <p className="text-sm text-gray-400 font-mono">
+                  {getGreeting()}
+                </p>
               </div>
             </div>
 
@@ -158,18 +149,26 @@ export default function Dashboard() {
               <div className="flex items-center gap-3 text-sm font-mono">
                 <div className="flex items-center gap-1">
                   <div
-                    className={`w-2 h-2 rounded-full ${isOnline ? "bg-green-400" : "bg-red-400"} animate-pulse`}
+                    className={`w-2 h-2 rounded-full ${
+                      isOnline ? "bg-green-400" : "bg-red-400"
+                    } animate-pulse`}
                   ></div>
-                  <span className="text-gray-400">{isOnline ? "Online" : "Offline"}</span>
+                  <span className="text-gray-400">
+                    {isOnline ? "Online" : "Offline"}
+                  </span>
                 </div>
                 <div className="text-gray-500">|</div>
-                <span className="text-gray-400">{currentTime.toLocaleTimeString()}</span>
+                <span className="text-gray-400">
+                  {currentTime.toLocaleTimeString()}
+                </span>
               </div>
 
               {/* User menu */}
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center">
-                  <span className="text-sm font-mono">{session?.user?.email?.[0]?.toUpperCase() || "U"}</span>
+                  <span className="text-sm font-mono">
+                    {session?.user?.email?.[0]?.toUpperCase() || "U"}
+                  </span>
                 </div>
                 <button
                   onClick={() => signOut({ callbackUrl: "/" })}
@@ -186,7 +185,9 @@ export default function Dashboard() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 py-8">
         {/* Quick Actions */}
         <div className="mb-8">
-          <h2 className="text-xl font-mono text-green-400 mb-4">// Quick Actions</h2>
+          <h2 className="text-xl font-mono text-green-400 mb-4">
+            // Quick Actions
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {quickActions.map((action, index) => (
               <button
@@ -202,48 +203,12 @@ export default function Dashboard() {
                     Alt+{action.shortcut}
                   </span>
                 </div>
-                <h3 className="font-mono text-white font-semibold mb-1">{action.name}</h3>
+                <h3 className="font-mono text-white font-semibold mb-1">
+                  {action.name}
+                </h3>
                 <p className="text-gray-400 text-sm">{action.description}</p>
               </button>
             ))}
-          </div>
-        </div>
-
-        {/* Fun Interactive Elements */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          {/* Panchi Power */}
-          <div className="bg-gray-900/50 backdrop-blur border border-gray-700 rounded-lg p-6">
-            <div className="flex items-center gap-3 mb-4">
-              <span className="text-2xl">🎯</span>
-              <h3 className="text-lg font-mono text-green-400">panchi.power</h3>
-            </div>
-            <div className="text-center">
-              <button
-                onClick={handlePanchiClick}
-                className="text-4xl font-mono text-blue-400 hover:scale-110 transition-transform duration-200 mb-2"
-              >
-                {panchiScore}
-              </button>
-              <p className="text-gray-400 text-sm font-mono">
-                {panchiScore === 0 && "Click to charge up!"}
-                {panchiScore > 0 && panchiScore < 3 && "Power building..."}
-                {panchiScore >= 3 && panchiScore < 6 && "Energy rising!"}
-                {panchiScore >= 6 && panchiScore < 10 && "Almost maximum!"}
-                {panchiScore >= 10 && "Legendary status! 🌟"}
-              </p>
-            </div>
-          </div>
-
-          {/* Popu Vibes */}
-          <div className="bg-gray-900/50 backdrop-blur border border-gray-700 rounded-lg p-6">
-            <div className="flex items-center gap-3 mb-4">
-              <span className="text-2xl">✨</span>
-              <h3 className="text-lg font-mono text-green-400">popu.vibes</h3>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl mb-2 animate-pulse">{popuMoods[popuMood].emoji}</div>
-              <p className="text-gray-400 text-sm font-mono">{popuMoods[popuMood].text}</p>
-            </div>
           </div>
         </div>
 
@@ -252,7 +217,9 @@ export default function Dashboard() {
           <div className="bg-gray-900/50 backdrop-blur border border-gray-700 rounded-lg p-6">
             <div className="flex items-center gap-3 mb-4">
               <span className="text-2xl">💡</span>
-              <h2 className="text-lg font-mono text-green-400">developer.tips[]</h2>
+              <h2 className="text-lg font-mono text-green-400">
+                developer.tips[]
+              </h2>
             </div>
             <div className="h-6 overflow-hidden">
               <p
@@ -271,21 +238,27 @@ export default function Dashboard() {
 
         {/* Recent Activity */}
         <div>
-          <h2 className="text-xl font-mono text-green-400 mb-4">// Recent Activity</h2>
+          <h2 className="text-xl font-mono text-green-400 mb-4">
+            // Recent Activity
+          </h2>
           <div className="bg-gray-900/50 backdrop-blur border border-gray-700 rounded-lg">
             <div className="p-4 border-b border-gray-700">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 bg-red-500 rounded-full"></div>
                 <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
                 <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                <span className="ml-2 text-gray-400 font-mono text-sm">activity.log</span>
+                <span className="ml-2 text-gray-400 font-mono text-sm">
+                  activity.log
+                </span>
               </div>
             </div>
             <div className="p-4 font-mono text-sm space-y-2">
               <div className="flex items-center gap-3 text-gray-400">
                 <span className="text-green-400">✓</span>
                 <span>User authenticated successfully</span>
-                <span className="text-gray-600 ml-auto">{currentTime.toLocaleTimeString()}</span>
+                <span className="text-gray-600 ml-auto">
+                  {currentTime.toLocaleTimeString()}
+                </span>
               </div>
               <div className="flex items-center gap-3 text-gray-400">
                 <span className="text-blue-400">i</span>
@@ -294,7 +267,9 @@ export default function Dashboard() {
               </div>
               <div className="flex items-center gap-3 text-gray-400">
                 <span className="text-yellow-400">⚠</span>
-                <span>Remember to upload that video you've been procrastinating</span>
+                <span>
+                  Remember to upload that video you've been procrastinating
+                </span>
                 <span className="text-gray-600 ml-auto">Always</span>
               </div>
               <div className="flex items-center gap-3 text-gray-400">
@@ -311,11 +286,14 @@ export default function Dashboard() {
       <footer className="relative z-10 border-t border-gray-800 bg-gray-900/50 backdrop-blur mt-12">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between text-sm font-mono text-gray-500">
-            <span>Built with Next.js, NextAuth & ImageKit // No bugs were harmed in the making</span>
-            <span>Keyboard shortcuts enabled // Alt + [U,V] | Panchi power: {panchiScore}</span>
+            <span>
+              Built with Next.js, NextAuth & ImageKit // No bugs were harmed in
+              the making
+            </span>
+            <span>Keyboard shortcuts enabled // Alt + [U,V] </span>
           </div>
         </div>
       </footer>
     </div>
-  )
+  );
 }
